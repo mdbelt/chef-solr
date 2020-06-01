@@ -5,6 +5,12 @@
 # Copyright 2013, David Radcliffe
 #
 
+# Fix entropy SOLR warning
+include_recipe 'entropy::default'
+
+# LSOF needed for stable SOLR
+package 'lsof'
+
 if node['solr']['install_java']
   include_recipe 'apt'
   include_recipe 'java'
@@ -15,9 +21,10 @@ solr_path = "#{extract_path}/#{node['solr']['version'].split('.')[0].to_i < 5 ? 
 
 user node['solr']['user'] do
   comment 'User that owns the solr data dir.'
-  home node['solr']['data_dir']
+  home '/etc/default'
+#  home node['solr']['data_dir']
   system true
-  shell '/bin/false'
+#  shell '/bin/false'
   only_if { node['solr']['user'] != 'root' }
 end
 
@@ -26,6 +33,14 @@ group node['solr']['group'] do
   append true
   system true
   only_if { node['solr']['group'] != 'root' }
+end
+
+# Fix limits SOLR warning
+template '/etc/security/limits.d/99-solr-limits.conf' do
+  source '99-solr-limits.conf.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
 end
 
 ark 'solr' do
@@ -46,36 +61,37 @@ directory node['solr']['data_dir'] do
   action :create
 end
 
-template '/var/lib/solr.start' do
-  source 'solr.start.erb'
+# Not applicable anymore
+# template '/var/lib/solr.start' do
+#   source 'solr.start.erb'
+#   owner 'root'
+#   group 'root'
+#   mode '0755'
+#   variables(
+#     :solr_dir => solr_path,
+#     :solr_home => node['solr']['data_dir'],
+#     :port => node['solr']['port'],
+#     :pid_file => node['solr']['pid_file'],
+#     :log_file => node['solr']['log_file'],
+#     :java_options => node['solr']['java_options']
+#   )
+#   only_if { !platform_family?('debian') }
+# end
+
+template '/etc/default/solr.in.sh' do
   owner 'root'
-  group 'root'
-  mode '0755'
-  variables(
-    :solr_dir => solr_path,
-    :solr_home => node['solr']['data_dir'],
-    :port => node['solr']['port'],
-    :pid_file => node['solr']['pid_file'],
-    :log_file => node['solr']['log_file'],
-    :java_options => node['solr']['java_options']
-  )
-  only_if { !platform_family?('debian') }
+  group node['solr']['group']
+  mode '0640'
+  notifies :restart, 'service[solr]', :delayed
 end
 
-template '/etc/init.d/solr' do
-  source platform_family?('debian') ? 'initd.debian.erb' : 'initd.erb'
+# Switch to copy from packaged solr service init.d, everything appears to be confirgured from solr.in.sh (above now)
+remote_file '/etc/init.d/solr' do
+  source 'file:///opt/solr/bin/init.d/solr'
   owner 'root'
   group 'root'
   mode '0755'
-  variables(
-    :solr_dir => solr_path,
-    :solr_home => node['solr']['data_dir'],
-    :port => node['solr']['port'],
-    :pid_file => node['solr']['pid_file'],
-    :log_file => node['solr']['log_file'],
-    :user => node['solr']['user'],
-    :java_options => node['solr']['java_options']
-  )
+  notifies :restart, 'service[solr]', :delayed
 end
 
 service 'solr' do

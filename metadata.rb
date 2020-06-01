@@ -4,7 +4,7 @@ maintainer_email 'radcliffe.david@gmail.com'
 license          'MIT'
 description      'Installs the solr search engine.'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.6.0'
+version          '0.8.5'
 
 supports 'amazon'
 supports 'centos'
@@ -15,6 +15,7 @@ supports 'ubuntu'
 
 depends 'apt'
 depends 'ark'
+depends 'entropy'
 depends 'java'
 
 source_url 'https://github.com/dwradcliffe/chef-solr' if respond_to?(:source_url)
