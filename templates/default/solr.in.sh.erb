@@ -141,25 +141,25 @@ SOLR_HOST="<%= node['fqdn']%>"
 
 # Enables HTTPS. It is implictly true if you set SOLR_SSL_KEY_STORE. Use this config
 # to enable https module with custom jetty configuration.
-#SOLR_SSL_ENABLED=true
+<%= node['solr']['SOLR_SSL_ENABLED'].nil? || ''.eql?(node['solr']['SOLR_SSL_ENABLED']) ? '#SOLR_SSL_ENABLED=true': "SOLR_SSL_ENABLED=#{node['solr']['SOLR_SSL_ENABLED']}"%>
 # Uncomment to set SSL-related system properties
 # Be sure to update the paths to the correct keystore for your environment
-#SOLR_SSL_KEY_STORE=etc/solr-ssl.keystore.jks
-#SOLR_SSL_KEY_STORE_PASSWORD=secret
-#SOLR_SSL_TRUST_STORE=etc/solr-ssl.keystore.jks
-#SOLR_SSL_TRUST_STORE_PASSWORD=secret
+<%= node['solr']['SOLR_SSL_KEY_STORE'].nil? || ''.eql?(node['solr']['SOLR_SSL_KEY_STORE']) ? '#SOLR_SSL_KEY_STORE=etc/solr-ssl.keystore.jks': "SOLR_SSL_KEY_STORE=#{node['solr']['SOLR_SSL_KEY_STORE']}"%>
+<%= node['solr']['SOLR_SSL_KEY_STORE_PASSWORD'].nil? || ''.eql?(node['solr']['SOLR_SSL_KEY_STORE_PASSWORD']) ? '#SOLR_SSL_KEY_STORE_PASSWORD=secret': "SOLR_SSL_KEY_STORE_PASSWORD=#{node['solr']['SOLR_SSL_KEY_STORE_PASSWORD']}"%>
+<%= node['solr']['SOLR_SSL_TRUST_STORE'].nil? || ''.eql?(node['solr']['SOLR_SSL_TRUST_STORE']) ? '#SOLR_SSL_TRUST_STORE=etc/solr-ssl.keystore.jks': "SOLR_SSL_TRUST_STORE=#{node['solr']['SOLR_SSL_TRUST_STORE']}"%>
+<%= node['solr']['SOLR_SSL_TRUST_STORE_PASSWORD'].nil? || ''.eql?(node['solr']['SOLR_SSL_TRUST_STORE_PASSWORD']) ? '#SOLR_SSL_TRUST_STORE_PASSWORD=secret': "SOLR_SSL_TRUST_STORE_PASSWORD=#{node['solr']['SOLR_SSL_TRUST_STORE_PASSWORD']}"%>
 # Require clients to authenticate
-#SOLR_SSL_NEED_CLIENT_AUTH=false
+<%= node['solr']['SOLR_SSL_NEED_CLIENT_AUTH'].nil? || ''.eql?(node['solr']['SOLR_SSL_NEED_CLIENT_AUTH']) ? '#SOLR_SSL_NEED_CLIENT_AUTH=false': "SOLR_SSL_NEED_CLIENT_AUTH=#{node['solr']['SOLR_SSL_NEED_CLIENT_AUTH']}"%>
 # Enable clients to authenticate (but not require)
-#SOLR_SSL_WANT_CLIENT_AUTH=false
+<%= node['solr']['SOLR_SSL_WANT_CLIENT_AUTH'].nil? || ''.eql?(node['solr']['SOLR_SSL_WANT_CLIENT_AUTH']) ? '#SOLR_SSL_WANT_CLIENT_AUTH=false': "SOLR_SSL_WANT_CLIENT_AUTH=#{node['solr']['SOLR_SSL_WANT_CLIENT_AUTH']}"%>
 # Verify client's hostname during SSL handshake
-#SOLR_SSL_CLIENT_HOSTNAME_VERIFICATION=false
+<%= node['solr']['SOLR_SSL_CLIENT_HOSTNAME_VERIFICATION'].nil? || ''.eql?(node['solr']['SOLR_SSL_CLIENT_HOSTNAME_VERIFICATION']) ? '#SOLR_SSL_CLIENT_HOSTNAME_VERIFICATION=false': "SOLR_SSL_CLIENT_HOSTNAME_VERIFICATION=#{node['solr']['SOLR_SSL_CLIENT_HOSTNAME_VERIFICATION']}"%>
 # SSL Certificates contain host/ip "peer name" information that is validated by default. Setting
 # this to false can be useful to disable these checks when re-using a certificate on many hosts
-#SOLR_SSL_CHECK_PEER_NAME=true
+<%= node['solr']['SOLR_SSL_CHECK_PEER_NAME'].nil? || ''.eql?(node['solr']['SOLR_SSL_CHECK_PEER_NAME']) ? '#SOLR_SSL_CHECK_PEER_NAME=true': "SOLR_SSL_CHECK_PEER_NAME=#{node['solr']['SOLR_SSL_CHECK_PEER_NAME']}"%>
 # Override Key/Trust Store types if necessary
-#SOLR_SSL_KEY_STORE_TYPE=PKCS12
-#SOLR_SSL_TRUST_STORE_TYPE=PKCS12
+<%= node['solr']['SOLR_SSL_KEY_STORE_TYPE'].nil? || ''.eql?(node['solr']['SOLR_SSL_KEY_STORE_TYPE']) ? '#SOLR_SSL_KEY_STORE_TYPE=PKCS12': "SOLR_SSL_KEY_STORE_TYPE=#{node['solr']['SOLR_SSL_KEY_STORE_TYPE']}"%>
+<%= node['solr']['SOLR_SSL_TRUST_STORE_TYPE'].nil? || ''.eql?(node['solr']['SOLR_SSL_TRUST_STORE_TYPE']) ? '#SOLR_SSL_TRUST_STORE_TYPE=PKCS12': "SOLR_SSL_TRUST_STORE_TYPE=#{node['solr']['SOLR_SSL_TRUST_STORE_TYPE']}"%>
 
 # Uncomment if you want to override previously defined SSL values for HTTP client
 # otherwise keep them commented and the above values will automatically be set for HTTP clients
