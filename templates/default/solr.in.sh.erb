@@ -28,7 +28,7 @@
 #SOLR_STOP_WAIT="180"
 
 # Increase Java Heap as needed to support your indexing / query needs
-#SOLR_HEAP="512m"
+<%= node['solr']['SOLR_HEAP'].nil? || ''.eql?(node['solr']['SOLR_HEAP']) ? '#SOLR_HEAP="512m"': "SOLR_HEAP=\"#{node['solr']['SOLR_HEAP']}\""%>
 
 # Expert: If you want finer control over memory options, specify them directly
 # Comment out SOLR_HEAP if you are using this though, that takes precedence
@@ -64,7 +64,7 @@
 # Set the ZooKeeper connection string if using an external ZooKeeper ensemble
 # e.g. host1:2181,host2:2181/chroot
 # Leave empty if not using SolrCloud
-<%= node['solr']['ZK_HOST'].nil? || ''.eql?(node['solr']['ZK_HOST']) ? '#ZK_HOST=""': "ZK_HOST=""#{node['solr']['ZK_HOST']}"""%>
+<%= node['solr']['ZK_HOST'].nil? || ''.eql?(node['solr']['ZK_HOST']) ? '#ZK_HOST=""': "ZK_HOST=\"#{node['solr']['ZK_HOST']}\""%>
 
 # Set the ZooKeeper client timeout (for SolrCloud mode)
 #ZK_CLIENT_TIMEOUT="15000"
@@ -185,8 +185,8 @@ SOLR_HOST="<%= node['fqdn']%>"
 # Settings for authentication
 # Please configure only one of SOLR_AUTHENTICATION_CLIENT_BUILDER or SOLR_AUTH_TYPE parameters
 #SOLR_AUTHENTICATION_CLIENT_BUILDER="org.apache.solr.client.solrj.impl.PreemptiveBasicAuthClientBuilderFactory"
-#SOLR_AUTH_TYPE="basic"
-#SOLR_AUTHENTICATION_OPTS="-Dbasicauth=solr:SolrRocks"
+<%= node['solr']['SOLR_AUTH_TYPE'].nil? || ''.eql?(node['solr']['SOLR_AUTH_TYPE']) ? "#SOLR_AUTH_TYPE=\"basic\"": "SOLR_AUTH_TYPE=\"#{node['solr']['SOLR_AUTH_TYPE']}\""%>
+<%= node['solr']['SOLR_AUTHENTICATION_OPTS'].nil? || ''.eql?(node['solr']['SOLR_AUTHENTICATION_OPTS']) ? "#SOLR_AUTHENTICATION_OPTS=\"-Dbasicauth=solr:SolrRocks\"": "SOLR_AUTHENTICATION_OPTS=\"#{node['solr']['SOLR_AUTHENTICATION_OPTS']}\""%>
 
 # Settings for ZK ACL
 #SOLR_ZK_CREDS_AND_ACLS="-DzkACLProvider=org.apache.solr.common.cloud.VMParamsAllAndReadonlyDigestZkACLProvider \
@@ -215,7 +215,7 @@ SOLR_HOST="<%= node['fqdn']%>"
 # For a visual indication in the Admin UI of what type of environment this cluster is, configure
 # a -Dsolr.environment property below. Valid values are prod, stage, test, dev, with an optional
 # label or color, e.g. -Dsolr.environment=test,label=Functional+test,color=brown
-#SOLR_OPTS="$SOLR_OPTS -Dsolr.environment=prod"
+<%= node['solr']['environment'].nil? || ''.eql?(node['solr']['environment']) ? "#SOLR_OPTS=\"$SOLR_OPTS -Dsolr.environment=prod\"": "SOLR_OPTS=\"$SOLR_OPTS -Dsolr.environment=#{node['solr']['environment']}\""%>
 
 # Specifies the path to a common library directory that will be shared across all cores.
 # Any JAR files in this directory will be added to the search path for Solr plugins.
