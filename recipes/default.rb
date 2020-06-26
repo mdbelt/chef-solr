@@ -94,6 +94,12 @@ remote_file '/etc/init.d/solr' do
   notifies :restart, 'service[solr]', :delayed
 end
 
+#Ensure haveged is started (& auto start) - entropy cookbook doesn't set service to autostart
+service 'haveged' do
+  action [:enable, :start]
+end
+
+#Ensure SOLR started
 service 'solr' do
   supports :restart => true, :status => true
   action [:enable, :start]
