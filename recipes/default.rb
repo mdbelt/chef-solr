@@ -61,23 +61,7 @@ directory node['solr']['data_dir'] do
   action :create
 end
 
-# Not applicable anymore
-# template '/var/lib/solr.start' do
-#   source 'solr.start.erb'
-#   owner 'root'
-#   group 'root'
-#   mode '0755'
-#   variables(
-#     :solr_dir => solr_path,
-#     :solr_home => node['solr']['data_dir'],
-#     :port => node['solr']['port'],
-#     :pid_file => node['solr']['pid_file'],
-#     :log_file => node['solr']['log_file'],
-#     :java_options => node['solr']['java_options']
-#   )
-#   only_if { !platform_family?('debian') }
-# end
-
+# Dynamically specify solr options
 template '/etc/default/solr.in.sh' do
   owner 'root'
   group node['solr']['group']
